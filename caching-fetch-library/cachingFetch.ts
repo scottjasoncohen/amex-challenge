@@ -3,6 +3,8 @@
 // However, you must not change the surface API presented from this file,
 // and you should not need to change any other files in the project to complete the challenge
 
+import { useEffect, useState } from "react";
+
 type UseCachingFetch = (url: string) => {
   isLoading: boolean;
   data: unknown;
@@ -28,13 +30,30 @@ type UseCachingFetch = (url: string) => {
  *
  */
 export const useCachingFetch: UseCachingFetch = (url) => {
+  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState('');
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        console.log(json);
+        setData(json);
+      } catch (e: any) {
+        setError(e);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getData();
+  })
   return {
-    data: null,
-    isLoading: false,
-    error: new Error(
-      'UseCachingFetch has not been implemented, please read the instructions in DevTask.md',
-    ),
-  };
+    data, isLoading, error
+  }; 
 };
 
 /**
@@ -51,10 +70,24 @@ export const useCachingFetch: UseCachingFetch = (url) => {
  * 3. This file passes a type-check.
  *
  */
-export const preloadCachingFetch = async (url: string): Promise<void> => {
-  throw new Error(
-    'preloadCachingFetch has not been implemented, please read the instructions in DevTask.md',
-  );
+export const preloadCachingFetch = async (url: string): Promise<any> => {
+  const [data, setData] = useState('');
+
+  useEffect(() => {
+    const preloadData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+        setData(json);
+      } catch (e: any) {
+        return e;
+      } 
+    }
+
+    preloadData();
+  })
+
+ return data;
 };
 
 /**
