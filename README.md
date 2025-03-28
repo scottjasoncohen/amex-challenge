@@ -9,6 +9,7 @@ I am Scott, and I will be your Scott for this coding exercise.
 - Install Next.js (as we will need a modern React framework down the line)
 - Install SASS for styles
 - Install Jest for unit testings
+- Give this project a name in the package.json
 
 TO DOS:
 
